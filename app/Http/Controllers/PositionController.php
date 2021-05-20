@@ -18,4 +18,6 @@ class PositionController extends Controller
         $response = createSuccessResponse(200, "success", "Get position by user id success", $position);
         return $response;
     }
+
+    
 }

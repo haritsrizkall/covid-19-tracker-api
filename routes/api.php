@@ -29,6 +29,7 @@ Route::get('/users/{id}', [UserController::class, 'get'])->middleware(Authorizat
 
 Route::get('/persons/', [PersonController::class, 'get']);
 Route::get('/persons/{id}', [PersonController::class, 'get']);
+Route::get('/search/{query?}', [PersonController::class, 'getPersonByName']);
 
 Route::get('/positions/', [PositionController::class, 'getByUserId']);
 Route::get('/positions/{user_id}', [PositionController::class, 'getByUserId']);
