@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Person;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Query\JoinClause;
 
 class PersonController extends Controller
 {
@@ -31,6 +32,14 @@ class PersonController extends Controller
         }
         $person = DB::table('persons')->where('name', 'LIKE', '%' . $query . '%')->get();
         $response = createSuccessResponse(200, "success", "Get user by name query success", $person);
+        return $response;
+    }
+
+    public function getPersonDetail(Request $request, $user_id){
+        $person = Person::with('position')
+                    ->where('id', $user_id)
+                    ->first();
+        $response = createSuccessResponse(200, "success", "success to get person detail", $person);
         return $response;
     }
 }
