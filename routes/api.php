@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Middleware\Authorization;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,7 +21,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('/users/', [UserController::class, 'index']);
-Route::post('/sessions/', [UserController::class, 'session']);
+Route::post('/users/auth_check', [UserController::class, 'session']);
 Route::post('/users/', [UserController::class, 'create']);
+Route::get('/users/{id}', [UserController::class, 'get'])->middleware(Authorization::class);
 
 
