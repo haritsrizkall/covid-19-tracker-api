@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\PersonController;
+use App\Http\Controllers\PositionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -25,6 +27,9 @@ Route::post('/users/auth_check', [UserController::class, 'session']);
 Route::post('/users/', [UserController::class, 'create']);
 Route::get('/users/{id}', [UserController::class, 'get'])->middleware(Authorization::class);
 
-Route::get('/persons')
+Route::get('/persons/', [PersonController::class, 'get']);
+Route::get('/persons/{id}', [PersonController::class, 'get']);
 
+Route::get('/positions/', [PositionController::class, 'getByUserId']);
+Route::get('/positions/{user_id}', [PositionController::class, 'getByUserId']);
 

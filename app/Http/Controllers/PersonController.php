@@ -13,8 +13,11 @@ class PersonController extends Controller
             # code...
             $person = Person::all();
             $response = createSuccessResponse(200, "success", "Get all user success", $person);
-            return $response
+            return $response;
             
         }
+        $person = Person::Where('id', $id)->first();
+        $response = createSuccessResponse(200, "success", "Get user by id success", $person);
+        return $response;
     }
 }
