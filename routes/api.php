@@ -25,4 +25,6 @@ Route::post('/users/auth_check', [UserController::class, 'session']);
 Route::post('/users/', [UserController::class, 'create']);
 Route::get('/users/{id}', [UserController::class, 'get'])->middleware(Authorization::class);
 
+Route::get('/persons')
+
 
