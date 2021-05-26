@@ -28,10 +28,14 @@ Route::post('/users/', [UserController::class, 'create']);
 Route::get('/users/{id}', [UserController::class, 'get'])->middleware(Authorization::class);
 
 Route::get('/persons/', [PersonController::class, 'get']);
+Route::get('/persons/sick', [PersonController::class, 'getSickPerson']);
+Route::get('/persons/{id}/tracing/', [PersonController::class, 'personTracing']);
 Route::get('/persons/{id}', [PersonController::class, 'get']);
 Route::get('/search/{query?}', [PersonController::class, 'getPersonByName']);
 Route::get('detail/{id}', [PersonController::class, 'getPersonDetail']);
 
+
+
 Route::get('/positions/', [PositionController::class, 'getByUserId']);
-Route::get('/positions/{user_id}', [PositionController::class, 'getByUserId']);
+Route::get('/positions/{person_id}', [PositionController::class, 'getByUserId']);
 

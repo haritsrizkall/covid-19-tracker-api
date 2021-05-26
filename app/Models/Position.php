@@ -12,4 +12,8 @@ class Position extends Model
     protected $table = 'positions';
     protected $primaryKey = 'id';
     public $timestamp = true;
+
+    public function person(){
+        return $this->belongsTo(Person::class);
+    }
 }
