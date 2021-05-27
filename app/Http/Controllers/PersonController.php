@@ -72,20 +72,23 @@ class PersonController extends Controller
         foreach ($person->position as $key => $valPersonPosition) {
             foreach ($sickPositions as $key => $valSickPosition) {
                $distance = $this->_distance($valPersonPosition->latitude, $valPersonPosition->longitude, $valSickPosition->latitude, $valSickPosition->longitude);
-               if ($distance <= 100) {
+               $timeDistance = $this->_timeDistance($valPersonPosition->date_time, $valSickPosition->date_time);
+               if ($distance <= 100 && $timeDistance <= 300) {
                    # code...
                     $valPersonPosition->distance = $distance;
+                    $valPersonPosition->time_distance = $timeDistance;
                     $valPersonPosition->kondisi = 'terpapar';
                     break;
                }else{
+                    $valPersonPosition->time_distance = $timeDistance;
                     $valPersonPosition->distance = $distance;
                     $valPersonPosition->kondisi = 'aman';
                }
-
+               
             }
             
         }
-        $response = createSuccessResponse(200, "success", "tacing success", $person);
+        $response = createSuccessResponse(200, "success", "tracing success", $person);
         return $response;
     }
 
@@ -103,4 +106,13 @@ class PersonController extends Controller
             return ($miles * 1.609344 *1000) ;        
         }
       }
-}
+    
+      private function _timeDistance($time1, $time2){
+          $timeDistance = abs(strtotime($time1) - strtotime($time2));
+          return $timeDistance; 
+      }
+
+
+    }
+
+
