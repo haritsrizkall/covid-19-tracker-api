@@ -24,6 +24,11 @@ class Authorization
             return response($response, 401);
         }
         $headerArr = explode(" ", $header);
+        if (count($headerArr) < 2) {
+            # code...
+            $response = unauthorizedResponse();
+            return response($response, 401);
+        }
         $token = $headerArr[1];
         $decodedToken = validateToken($token);
         $request->session()->put('user_info', $decodedToken);

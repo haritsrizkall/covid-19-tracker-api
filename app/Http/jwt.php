@@ -12,7 +12,6 @@ if (! function_exists('generateToken')) {
         );
     
         $jwt = JWT::encode($payload, $key);
-        $decoded = JWT::decode($jwt, $key, array('HS256'));
         return $jwt;
     
     }

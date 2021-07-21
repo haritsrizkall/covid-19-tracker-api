@@ -12,9 +12,10 @@ use Illuminate\Support\Facades\Validator;
 class UserController extends Controller
 {
     //
-   public function index(){
+   public function getAll(){
        $user = User::all();
-       return $user;
+       $response = createSuccessResponse(200, 'success', 'Get all users success', $user);
+       return $response;
    }
 
    public function create(Request $request){
@@ -24,7 +25,7 @@ class UserController extends Controller
            'password' => 'required',
        ]);
         $hashedPassword = password_hash($request->input('password'), PASSWORD_DEFAULT);
-        $user = User::Create([
+        $user = User::create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
             'password'=> $hashedPassword,
@@ -62,7 +63,7 @@ class UserController extends Controller
             # code...
             $errorAuth = [ "auth" => ["Wrong Email"]];
             $response = createFailedResponse(400, 'error', 'Login Fail', $errorAuth);
-            return response($response, 400);
+            return $response;
         }
         if (!password_verify($request->input('password'), $user['password'])) {
             $errorAuth = [ "auth" => ["Wrong Password"]];
@@ -87,7 +88,7 @@ class UserController extends Controller
         $userInfoSession = $request->session()->get('user_info');
         // return 'user_id : ' . $user['id'] . 
         // 'session user_id : ' . $userInfoSession->user_id;
-        if ($id != $userInfoSession->user_id || $user['level'] == 1) {
+        if ($id != $userInfoSession->user_id) {
             $response = unauthorizedResponse();
             return response($response, 401);
         }
@@ -99,4 +100,28 @@ class UserController extends Controller
         return createSuccessResponse(200, 'success', 'Get user success', $user);
    }    
 
+   public function delete(Request $request, $id = null){
+        $userInfoSession = $request->session()->get('user_info');
+    // return 'user_id : ' . $user['id'] . 
+    // 'session user_id : ' . $userInfoSession->user_id;
+        if ($id != $userInfoSession->user_id) {
+            $response = unauthorizedResponse();
+            return response($response, 401);
+        }
+       $id = (int)$id;
+       if ($id == null || $id == 0) {
+           # code...
+           $response = createFailedResponse(400, "error", "Wrong type param", null);
+           return $response;
+       }
+
+       $deletedUser = User::where('id', $id)
+                            ->delete();
+       if ($deletedUser == 0) {
+           # code...
+           $response = createFailedResponse(400, "error", "User not found by that id", null);
+       }
+       $response = createSuccessResponse(200, "success", "Delete user success", null);
+       return $response;
+   }
 }

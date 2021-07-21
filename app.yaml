@@ -1,0 +1,65 @@
+runtime: php73
+
+runtime_config:
+  document_root: public 
+
+
+env_variables:
+  ## Put production environment variables here.
+  APP_KEY: base64:eIWupjhfN5FoAFbkKCLjGj0DpayTszjsmc6L1obSimc=
+  APP_STORAGE: /tmp
+  VIEW_COMPILED_PATH: /tmp
+  SESSION_DRIVER: cookie
+
+
+# runtime: php73 # Replace with php74 to use PHP 7.4
+# env: flex 
+
+# runtime_config:
+#   document_root: public
+
+# handlers:
+#   - url: /(.*\.(gif|png|jpg|css|js))$
+#   static_files: public/\1
+#   upload: public/.*\.(gif|png|jpg|css|js)$
+
+#   - url: /.*
+#   secure: always
+#   redirect_http_response_code: 301
+#   script: auto
+# # # Serve a directory as a static resource.
+# # - url: /stylesheets
+# #   static_dir: stylesheets
+
+# # - url: /(.*\.(gif|png|jpg|css|js))$
+# #   static_files: public/\1
+# #   upload: public/.*\.(gif|png|jpg|css|js)$
+
+# # - url: /.*
+# #   secure: always
+# #   redirect_http_response_code: 301
+# #   script: auto
+
+# # # Serve images as static resources.
+# # - url: /(.+\.(gif|png|jpg))$
+# #   static_files: \1
+# #   upload: .+\.(gif|png|jpg)$
+
+# # # Serve your app through a front controller at index.php or public/index.php.
+# # - url: .*
+# #   script: auto
+
+# entrypoint:
+#   serve index.php
+
+# env_variables:
+#  # Put production environment variables here.
+#  APP_ENV: local   # or production
+#  APP_DEBUG : true # or false 
+#  APP_KEY: base64:sbXzpaMclKJ5kZi1KlJvA8K8oDQjAxxsBLcoXHZZs7U=
+#  CLOUDSQL_USER: root
+#  CLOUDSQL_DB: covid19
+#  CLOUDSQL_PASSWORD: freakabsurd
+#  CLOUDSQL_DSN: covid-19-tracker-316708:asia-southeast2:ranjau
+# #go to generate app key paragraf in this tutorial
+  

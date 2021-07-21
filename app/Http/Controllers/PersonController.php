@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Person;
+use App\Models\Position;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Query\JoinClause;
+use Illuminate\Support\Facades\Validator;
 
 class PersonController extends Controller
 {
@@ -21,6 +23,14 @@ class PersonController extends Controller
         $person = Person::Where('id', $id)->first();
         $response = createSuccessResponse(200, "success", "Get user by id success", $person);
         return $response;
+    }
+
+    public function getAll(Request $request, $id = null){
+            # code...
+            $person = Person::all();
+            $response = createSuccessResponse(200, "success", "Get all user success", $person);
+            return $response;
+            
     }
 
     public function getPersonByName(Request $request, $query = null){
@@ -52,6 +62,68 @@ class PersonController extends Controller
 
     }
 
+    public function create(Request $request){
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'gender' => 'required',
+            'age' => 'required',
+            'person_condition' => 'required'
+        ]);
+        if ($validator->fails()) {
+            # code...
+            $response = createFailedResponse(400, "error", "Failed to create person", $validator->errors());
+            return $response;
+        }
+
+        $person = Person::Create([
+            'name' => $request->input('name'),
+            'gender' => $request->input('gender'),
+            'age' => $request->input('age'),
+            'person_condition' => $request->input('person_condition')
+        ]);
+        
+        $response = createSuccessResponse(200, 'success', 'Person has been created', $person);
+        return $response;
+    }
+
+    public function update(Request $request, $person_id){
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'gender' => 'required',
+            'age' => 'required',
+            'person_condition' => 'required'
+        ]);
+        if ($validator->fails()) {
+            # code...
+            $response = createFailedResponse(400, "error", "Failed to update person position", $validator->errors());
+            return $response;
+        }
+        $person = Person::where('id', $person_id)
+                            ->update([
+                                'name' => $request->input('name'),
+                                'gender' => $request->input('gender'),
+                                'age' => $request->input('age'),
+                                'person_condition' => $request->input('person_condition')
+                            ]);
+        $dataResponse = [
+            'name' => $request->input('name'),
+            'gender' => $request->input('gender'),
+            'age' => $request->input('age'),
+            'person_condition' => $request->input('person_condition')
+        ];
+        $response = createSuccessResponse(200, "success", "Update person success", $dataResponse);
+        return $response;
+    }
+
+    public function delete(Request $request, $person_id){
+        $deletedPerson = Person::where('id', $person_id)
+                                    ->delete();
+        $deletedPosition = Position::where('person_id', $person_id)
+                                    ->delete();
+        $response = createSuccessResponse(200, "success", "Success to delete person by that id", null);
+        return $response;
+    }
+
     public function personTracing(Request $request, $user_id){
         $personSick = Person::with('position')
                         ->where('person_condition', 'Sakit')
@@ -68,7 +140,7 @@ class PersonController extends Controller
 
             }
         }
-        
+            
         foreach ($person->position as $key => $valPersonPosition) {
             foreach ($sickPositions as $key => $valSickPosition) {
                $distance = $this->_distance($valPersonPosition->latitude, $valPersonPosition->longitude, $valSickPosition->latitude, $valSickPosition->longitude);
